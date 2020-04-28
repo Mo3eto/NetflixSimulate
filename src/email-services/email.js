@@ -3,9 +3,12 @@ const jwt = require('jsonwebtoken')
 
 sgMail.setApiKey(process.env.sendgridAPIKey);
 
+const prodURL = 'https://mo3flex.herokuapp.com'
+const devURL = 'http://localhost:3000'
+
 const confirmationMail =  (user, token) => {
    // const token = await jwt.sign({_id: user._id}, this.process.env.JWT_SECRET) 
-    const url = `http://localhost:3000/confirmation/${token}`
+    const url = `${prodURL}/confirmation/${token}`
     const msg = {
         to: user.email,
         from: 'moatasemsalama954@outlook.com',
