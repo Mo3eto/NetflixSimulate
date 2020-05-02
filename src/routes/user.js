@@ -42,7 +42,7 @@ router.post('/users/signup', upload.single('avatar'), async (req, res) => {
 //Confirmation
 router.get('/confirmation/:token', async (req, res) => {
     try {
-        const user = await User.findOne({token:req.body.token})
+        const user = await User.findOne({token:req.token})
         if (user.isVerified) return res.status(400).send({ type: 'already-verified', msg: 'This user has already been verified.' });
         user.isVerified = true;
          await user.save()
@@ -58,10 +58,41 @@ router.post('/users/login', async (req, res) => {
     try{
         const user = await User.findByCredentials(req.body.email, req.body.password)
         if (!user.isVerified) {
-           return mailservice.confirmationMail(user, user.tokens[0].token)  
-        } //return res.status(401).send({ type: 'not-verified', msg: 'Your account has not been verified.' }); 
+           return res.send('Check your inbox for confirmation mail')
+        } 
         const token = await user.generateToken()     
         res.status(200).send({user, token})
+    }
+    catch(e) {
+        res.status(400).send(e)
+    }
+})
+
+//Forget Password
+router.post('/users/forgot-password', async (req, res) => {
+    try {
+        const user = await User.findOne({email: req.body.email})
+        if(!user)
+        {
+            return res.status(400).send('No User With This E-Mail')
+        }
+        await mailservice.recoveryMail(user)
+        res.status(200).send()
+
+    }
+    catch(e) {
+        res.status(400).send(e)
+    }
+    
+})
+
+//Reset Password
+router.post('/password-recovery/:token', async (req, res) => {
+    try {
+        const user = await User.findOne({token: req.token})
+        user.password = await bcrypt.hash(req.body.password, 8 )
+        await user.save()
+        res.status(200).send('Password Updated')
     }
     catch(e) {
         res.status(400).send(e)

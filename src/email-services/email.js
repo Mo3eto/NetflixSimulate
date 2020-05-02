@@ -8,7 +8,7 @@ const devURL = 'http://localhost:3000'
 
 const confirmationMail =  (user, token) => {
    // const token = await jwt.sign({_id: user._id}, this.process.env.JWT_SECRET) 
-    const url = `${prodURL}/confirmation/${token}`
+    const url = `${devURL}/confirmation/${token}`
     const msg = {
         to: user.email,
         from: 'moatasemsalama954@outlook.com',
@@ -19,6 +19,21 @@ const confirmationMail =  (user, token) => {
       sgMail.send(msg)
 
 }
+
+
+const recoveryMail = async (user) => {
+     const token = await user.generateToken()
+     const url = `${devURL}/password-recovery/${token}`
+     const msg = {
+         to: user.email,
+         from: 'moatasemsalama954@outlook.com',
+         subject: 'Recovery Mail',
+          text:`Welcome Here Mr. ${user.firstName} , Reset Your Password and Lets Go !` ,
+          html: `Recovery Mail <a href = ${url}>${url}</a>`
+     }    
+       sgMail.send(msg)
+ 
+ }
 
 const welcomeEmail = (user) => {
     
@@ -32,5 +47,6 @@ const welcomeEmail = (user) => {
     }
 module.exports = { 
     confirmationMail,
-    welcomeEmail
+    welcomeEmail,
+    recoveryMail
 } 
