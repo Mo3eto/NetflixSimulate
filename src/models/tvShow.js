@@ -18,9 +18,9 @@ const tvShowSchema = new mongoose.Schema({
     rating_votes:{
         type: String,
     },
-    poster:{
+    poster:[{
         type: String,
-    },
+    }],
     plot:{
         type: String,
     },

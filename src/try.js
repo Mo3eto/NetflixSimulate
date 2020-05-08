@@ -1,15 +1,19 @@
-var unirest = require("unirest");
+const key = '5737c03c0f5959c744a1d11bcaf38950'
+const tmdb = require('tmdbv3').init(key);
 
-var req = unirest("GET", "https://imdb-internet-movie-database-unofficial.p.rapidapi.com/search/inception");
-
-req.headers({
-	"x-rapidapi-host": "imdb-internet-movie-database-unofficial.p.rapidapi.com",
-	"x-rapidapi-key": "b046ec945fmsha6d847d573185b0p142c45jsna903aca1878a"
+tmdb.misc.latest((err ,res) => {
+	console.log(res.title);
 });
 
-
-req.end(function (res) {
-	if (res.error) throw new Error(res.error);
-
-	console.log(res.body);
+tmdb.movie.info(400, (err ,res) => {
+	console.log(res.title);	
 });
+
+tmdb.person.info(500, (err ,res) => {
+	console.log(res.name);	
+});
+
+// setting french as default language...
+//tmdb.setLanguage('fr');
+// and resetting to english.
+//tmdb.resetLanguage();
