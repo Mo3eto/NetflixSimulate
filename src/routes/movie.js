@@ -33,7 +33,7 @@ router.get('/movies/all', async (req, res) => {
 router.get('/movies/:title', async (req, res) => {
     
         try{
-            const search = req.params.title.match(/extraction/)
+            const search = req.params.title
             const movie =  await Movie.find ({title:search})
             res.send(movie)       
         }
