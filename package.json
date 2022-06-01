@@ -21,7 +21,7 @@
     "multer": "^1.4.2",
     "node-notifier": "^7.0.0",
     "nodemon": "^2.0.3",
-    "sharp": "^0.25.2",
+    "sharp": "^0.30.5",
     "tmdbv3": "^0.1.2",
     "validator": "^13.0.0",
     "web-push": "^3.4.3"
